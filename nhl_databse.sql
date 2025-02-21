@@ -193,6 +193,26 @@ SET fiveOnFiveFenwickPercentage = (
     AND fiveonfive_log.Team = gamelogs.Team
 );
 
+UPDATE gamelogs 
+SET avg_x_goals_last_5 = (
+    SELECT avg_x_goals_last_5
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET avg_x_goals_against_last_5 = (
+    SELECT avg_x_goals_against_last_5
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.Team = gamelogs.Team
+);
+
+-- DELETE situational rows as it is redundant (important data captured in situation = "all")
+DELETE FROM gamelogs
+WHERE situation != "all";
+
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
