@@ -100,5 +100,99 @@ ALTER TABLE gamelogs
 ALTER TABLE gamelogs
     ADD otherxGoalsAgainst FLOAT;
 
+ALTER TABLE gamelogs
+ADD fiveOnfivexGoalsFor FLOAT;
+
+ALTER TABLE gamelogs
+ADD fiveOnfiveGoalsAgainst FLOAT;
+
+ALTER TABLE gamelogs
+ADD fiveOnfiveCorsiPercentage FLOAT;
+
+ALTER TABLE gamelogs
+ADD fiveOnfiveFenwickPercentage FLOAT
+-- Add situational expected goal columns
+
+UPDATE gamelogs 
+SET powerPlayxGoalsFor = (
+    SELECT powerplayxGoalsFor 
+    FROM powerplay_log
+    WHERE powerplay_log.gameId = gamelogs.gameId
+    AND powerplay_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs
+SET powerPlayxGoalsAgainst = (
+    SELECT powerplayxGoalsAgainst 
+    FROM powerplay_log
+    WHERE powerplay_log.gameId = gamelogs.gameId
+    AND powerplay_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs
+SET shortHandedxGoalsFor = (
+    SELECT shortHandedxGoalsFor 
+    FROM shortHanded_log
+    WHERE shortHanded_log.gameId = gamelogs.gameId
+    AND shortHanded_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs
+SET shortHandedxGoalsAgainst = (
+    SELECT shortHandedxGoalsAgainst 
+    FROM shortHanded_log
+    WHERE shortHanded_log.gameId = gamelogs.gameId
+    AND shortHanded_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET otherxGoalsFor = (
+    SELECT otherxGoalsFor
+    FROM other_log
+    WHERE other_log.gameId = gamelogs.gameId
+    AND other_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET otherxGoalsAgainst = (
+    SELECT otherxGoalsAgainst
+    FROM other_log
+    WHERE other_log.gameId = gamelogs.gameId
+    AND other_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET fiveOnFivexGoalsFor = (
+    SELECT xGoalsFor
+    FROM fiveonfive_log
+    WHERE fiveonfive_log.gameId = gamelogs.gameId
+    AND fiveonfive_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET fiveOnFivexAgainst = (
+    SELECT xGoalsAgainst
+    FROM fiveonfive_log
+    WHERE fiveonfive_log.gameId = gamelogs.gameId
+    AND fiveonfive_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET fiveOnFiveCorsiPercentage = (
+    SELECT fenwickPercentage
+    FROM fiveonfive_log
+    WHERE fiveonfive_log.gameId = gamelogs.gameId
+    AND fiveonfive_log.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET fiveOnFiveFenwickPercentage = (
+    SELECT fenwickPercentage
+    FROM fiveonfive_log
+    WHERE fiveonfive_log.gameId = gamelogs.gameId
+    AND fiveonfive_log.Team = gamelogs.Team
+);
+
+
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
