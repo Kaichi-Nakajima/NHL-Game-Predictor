@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS gamelogs (
     gameId                     CHARACTER,
     OpposingTeam               TEXT,
     gameDate                   CHARACTER,
-    home_or_away,
+    home_or_away               TEXT
     situation                  TEXT,
     corsiPercentage            FLOAT,
     fenwickPercentage          FLOAT,
@@ -114,6 +114,9 @@ ADD fiveOnfiveFenwickPercentage FLOAT;
 
 ALTER TABLE gamelogs 
 ADD result INTEGER;
+
+ALTER TABLE gamelogs 
+ADD home_away INTEGER;
 
 -- Add situational expected goal columns
 
@@ -216,6 +219,12 @@ SET avg_x_goals_against_last_5 = (
 UPDATE gamelogs
 SET result = CASE
 WHEN goalsFor > goalsAgainst THEN 1
+ELSE 0
+END;
+
+UPDATE gamelogs
+SET home_away = CASE
+WHEN home_or_away = "HOME" THEN 1
 ELSE 0
 END;
 
