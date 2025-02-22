@@ -110,7 +110,11 @@ ALTER TABLE gamelogs
 ADD fiveOnfiveCorsiPercentage FLOAT;
 
 ALTER TABLE gamelogs
-ADD fiveOnfiveFenwickPercentage FLOAT
+ADD fiveOnfiveFenwickPercentage FLOAT;
+
+ALTER TABLE gamelogs 
+ADD result INTEGER;
+
 -- Add situational expected goal columns
 
 UPDATE gamelogs 
@@ -208,6 +212,12 @@ SET avg_x_goals_against_last_5 = (
     WHERE averages.gameId = gamelogs.gameId
     AND averages.Team = gamelogs.Team
 );
+
+UPDATE gamelogs
+SET result = CASE
+WHEN goalsFor > goalsAgainst THEN 1
+ELSE 0
+END;
 
 -- DELETE situational rows as it is redundant (important data captured in situation = "all")
 DELETE FROM gamelogs
