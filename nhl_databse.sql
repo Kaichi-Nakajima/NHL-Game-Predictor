@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS gamelogs (
 
 -- inserting data into table
 INSERT INTO gamelogs 
-(Team,Season,gameId,OpposingTeam,gameDate,home_or_away,situation, corsiPercentage,
+(Team,Season,gameId,OpposingTeam,home_or_away,gameDate,situation, corsiPercentage,
 fenwickPercentage, xGoalsFor,shotsOnGoalFor,blockedShotAttemptsFor, goalsFor, savedShotsOnGoalFor, penaltyMinutesFor,
 faceOffsWonFor,hitsFor,takeawaysFor, giveawaysFor, lowDangerShotsFor, mediumDangerShotsFor, highDangerShotsFor,
 lowDangerxGoalsFor, mediumDangerxGoalsFor,highDangerxGoalsFor, lowDangerGoalsFor, mediumDangerGoalsFor,
