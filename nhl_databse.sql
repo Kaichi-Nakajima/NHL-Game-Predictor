@@ -216,6 +216,38 @@ SET avg_x_goals_against_last_5 = (
     AND averages.Team = gamelogs.Team
 );
 
+UPDATE gamelogs 
+SET last_10_avg_goals_for= (
+    SELECT last_10_avg_goals_against
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET last_10_avg_goals_against= (
+    SELECT last_10_avg_goals_against
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET last_10_avg_xgoals_for= (
+    SELECT last_10_avg_x_goals_for
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.Team = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET last_10_avg_xgoals_against= (
+    SELECT last_10_avg_x_goals_against
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.Team = gamelogs.Team
+);
+
 UPDATE gamelogs
 SET result = CASE
 WHEN goalsFor > goalsAgainst THEN 1
