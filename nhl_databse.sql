@@ -118,6 +118,30 @@ ADD result INTEGER;
 ALTER TABLE gamelogs 
 ADD home_away INTEGER;
 
+ALTER TABLE gamelogs
+ADD last_10_goals_for FLOAT;
+
+ALTER TABLE gamelogs
+ADD last_10_xgoals_for FLOAT;
+
+ALTER TABLE gamelogs
+ADD last_10_xgoals_against FLOAT;
+
+ALTER TABLE gamelogs
+ADD last_10_goals_against FLOAT;
+
+ALTER TABLE gamelogs
+ADD opp_last_10_xgoals_for FLOAT;
+
+ALTER TABLE gamelogs
+ADD opp_last_10_goals_for FLOAT;
+
+ALTER TABLE gamelogs
+ADD opp_last_10_xgoals_against FLOAT;
+
+ALTER TABLE gamelogs
+ADD opp_last_10_goals_against FLOAT;
+
 -- Add situational expected goal columns
 
 UPDATE gamelogs 
@@ -259,6 +283,39 @@ SET home_away = CASE
 WHEN home_or_away = "HOME" THEN 1
 ELSE 0
 END;
+
+UPDATE gamelogs 
+SET opp_last_10_goals_for= (
+    SELECT last_10_avg_goals_for
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.OpposingTeam = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET opp_last_10_xgoals_for= (
+    SELECT last_10_avg_x_goals_for
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.OpposingTeam = gamelogs.Team
+);
+
+UPDATE gamelogs 
+SET opp_last_10_goals_against= (
+    SELECT last_10_avg__goals_against
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.OpposingTeam = gamelogs.Team
+);
+
+
+UPDATE gamelogs 
+SET opp_last_10_xgoals_against= (
+    SELECT last_10_avg_x_goals_against
+    FROM averages
+    WHERE averages.gameId = gamelogs.gameId
+    AND averages.OpposingTeam = gamelogs.Team
+);
 
 -- DELETE situational rows as it is redundant (important data captured in situation = "all")
 DELETE FROM gamelogs
